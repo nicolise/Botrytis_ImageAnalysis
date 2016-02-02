@@ -1,7 +1,11 @@
 rm(list=ls())
-setwd("~/Projects/Botrytis_ImageAnalysis/images")
-library(CRImage)
+setwd("~/Projects/Botrytis_ImageAnalysis/photos/examples")
 
+#install EBImage and CRImage (only need to do this once per R installation)
+#source("https://bioconductor.org/biocLite.R")
+#biocLite("EBImage")
+#biocLite("CRImage")
+library("CRImage")
 #inputs = .JPG raw file, .tif masks
 
 #--------------------------------------------------------------------
