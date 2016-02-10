@@ -1,0 +1,98 @@
+#Nicole E Soltis
+#From Jason A Corwin
+#14\06\10
+#Leaf Image Analysis protocol
+#-------------------------------------------------------------
+
+#images are transformed into hue/saturation/value (hsv) color space
+#leaf mask was created by selecting all pixels above Otsus saturation threshold 
+#and below Otsus value threshold
+#opening using a 15-pixel, disc-shaped kernel
+#masks are visually confirmed by overlaying the masks with the original image 
+#using ImageJ
+#all leaves are phenotyped using the masks and the original raw image 
+#using computeFeatures.moment() and computeFeatures.shape() functions in EBImage
+#which measures ~40 characteristics per object
+#including area, perimeter, major and minor axes,  and eccentricity in pixels
+#These thresholds and approaches will be tweaked for each different plant species 
+#Leaf objects were also measured for 25 custom and composite phenotypes
+#including the number of green and yellow pixels
+#the proportion of yellow to green pixels 
+
+#-------------------------------------------------------------
+rm(list=ls())
+#learn current directory, and set it to the correct one
+getwd()
+setwd("~/Projects/Botrytis_ImageAnalysis/photos/rosette_example")
+
+#only run this once to install image analysis
+#source("http://bioconductor.org/biocLite.R")
+#biocLite("EBImage")
+#biocLite("CRImage")
+
+library("EBImage")
+library("CRImage")
+
+#note: files already in .JPG format. Else change .JPG to .CR2 in script.
+Files <- list.files(pattern=".JPG")
+Files
+for(i in 1:length(Files)) {
+#tracks time to run script
+print(Sys.time())
+
+#reads image into a file for EBImage
+Plate.cr2 <- readImage(Files[i])
+#Plate.cr2 <- Plate.cr2[305:4929,497:2905,]
+
+#retrieves (PIXEL?) dimensions of image file
+Plate.row <- dim(Plate.cr2)[1]
+Plate.col <- dim(Plate.cr2)[2]
+
+# Import Image, get dimensions, and separate channels
+# (what are [,,,])
+Plate.red <- as.vector(Plate.cr2[,,1])
+Plate.grn <- as.vector(Plate.cr2[,,2])
+Plate.blu <- as.vector(Plate.cr2[,,3])
+
+# Convert CR2 Image from rgb to hsv 
+# The 14-bit pixel value range is 0:16383  ]
+Plate.hsv <- rgb2hsv(Plate.red, Plate.grn, Plate.blu, maxColorValue = 16383)
+Plate.hue <- Image(Plate.hsv[1,], dim = c(Plate.row, Plate.col))
+Plate.sat <- Image(Plate.hsv[2,], dim = c(Plate.row, Plate.col))
+Plate.value <- Image(Plate.hsv[3,]*10000, dim = c(Plate.row, Plate.col))
+rm(Plate.red, Plate.grn, Plate.blu, Plate.hsv)
+
+# Set histogram threshold and isolate leaves
+#method to change grayscale to binary
+#calculates optimum threshold for bi-modal histogram
+#minimize intra-class variance 
+
+for(j in c(0.15,0.20,0.25)) {
+
+#fills holes in objects
+#was from 0.2 to 0.3
+Lf.mask <- fillHull(Plate.hue > j & Plate.hue < 0.30)
+#array-based structuring element
+#for image filtering
+#sigma sets SD of gaussian shape
+#sigma was 0.3
+kern <- makeBrush(5,shape = 'gaussian',sigma = 0.3)
+#opening = erosion followed by dilation
+#erode: applies mask to center over each foreground pixel
+#pixels not covered by mask set to background
+#dilate: applies mask to center over each background pixel
+#pixels not covered by mask set to foreground
+Lf.mask <- opening(Lf.mask,kern)
+
+#adds labels to objects
+Obj <- bwlabel(Lf.mask)
+Obj.minRad <- computeFeatures.shape(Obj)[,'s.radius.min']
+#min rad was 10
+Obj.lvs <- as.numeric(names(Obj.minRad[Obj.minRad > 10]))
+Lf.mask <- Image(Obj %in% Obj.lvs, dim = c(Plate.row, Plate.col))
+
+writeImage(Lf.mask, gsub(".JPG", paste(j, "_LeafMask.JPG", sep=""), Files[i]))
+
+}
+}
+
