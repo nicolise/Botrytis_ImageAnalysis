@@ -1,5 +1,5 @@
 rm(list=ls())
-setwd("~/Projects/Botrytis_ImageAnalysis/photos/examples")
+setwd("C:/Users/nesoltis/Desktop/imageAnalaysis_DK/05_FeatureCalc")
 
 #install EBImage and CRImage (only need to do this once per R installation)
 #source("https://bioconductor.org/biocLite.R")
@@ -36,15 +36,16 @@ label4Nicole <- function(orig.label , image.f = RawFiles[f]){
     xa <- (x * 100 +1) : ((x+1) * 100)
     y <- (i-x)/10
     ya <- (y * 50 +1) : ((y+1) * 50)
-    labelMarker[xa,ya,]
+  labelMarker[xa,ya,]
   }
 
   RawImage <-readImage(image.f )
   
-  # start to draw lables
+  # start to draw labels
   for( i in 1:dim(orig.label)[1]) {
+    #try is here
     row <- orig.label[i,]
-    x <- round(row$Lesion.0.m.cx)
+    try(x <- round(row$Lesion.0.m.cx))
     y <- round(row$Lesion.0.m.cy)
     labelName <- as.numeric(as.character(row$Object))
     print(paste("DEBUG" , Sys.time() , ": row ",i,",  label " , labelName , ", Object " , row$Object) )
@@ -52,7 +53,9 @@ label4Nicole <- function(orig.label , image.f = RawFiles[f]){
     
     xa <- (x - 50 + 1 ) : (x + 50 )
     ya <- (y - 50 + 1 ) : (y )
-    RawImage[xa,ya,] <- (label[,,1:3] + RawImage[xa,ya,]) # C code would be better
+    #if a leaf after the first row is further LEFT than the first leaf of the first row,
+    #R give an error at this step. try() skips the offending leaves.
+    try(RawImage[xa,ya,] <- (label[,,1:3] + RawImage[xa,ya,])) # C code would be better
     
   }
   print(paste("DEBUG" , Sys.time() , ": output image " , paste0(image.f,"_labled.jpg") ) )

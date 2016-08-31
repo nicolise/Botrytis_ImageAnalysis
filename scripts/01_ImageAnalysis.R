@@ -28,15 +28,13 @@
 rm(list=ls())
 #learn current directory, and set it to the correct one
 getwd()
-setwd("C:/Users/rgwinner/Desktop/NICOLE/03_MaskedImages/0.30")
+setwd("C:/Users/nesoltis/Desktop/UGHP_Bcpics/03_Masked")
 
 #only run this once to install image analysis
 #source("http://bioconductor.org/biocLite.R")
 
-biocLite("EBImage")
-
-
-biocLite("CRImage")
+#biocLite("EBImage")
+#biocLite("CRImage")
 
 library("EBImage")
 library("CRImage")
@@ -80,7 +78,7 @@ rm(Plate.red, Plate.grn, Plate.blu, Plate.hsv)
 #Plate.mask <- Plate.hue>OtsuThresh
 #display(Plate.mask)
 #fills holes in objects
-Lf.mask <- fillHull(Plate.hue > 0.2 & Plate.hue < 0.3)
+Lf.mask <- fillHull(Plate.hue > 0.15 & Plate.hue < 0.3)
 #array-based structuring element
 #for image filtering
 #sigma sets SD of gaussian shape
