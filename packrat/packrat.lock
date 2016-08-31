@@ -1,0 +1,105 @@
+PackratFormat: 1.4
+PackratVersion: 0.4.7.1
+RVersion: 3.3.1
+Repos: BioCsoft=https://bioconductor.org/packages/3.3/bioc,
+    BioCann=https://bioconductor.org/packages/3.3/data/annotation,
+    BioCexp=https://bioconductor.org/packages/3.3/data/experiment,
+    BioCextra=https://bioconductor.org/packages/3.3/extra,
+    CRAN=https://cran.rstudio.com/,
+    CRANextra=https://www.stats.ox.ac.uk/pub/RWin
+
+Package: Biobase
+Source: Bioconductor
+Version: 2.32.0
+Hash: 8656d39f7657385a5aac26e9c3e53007
+Requires: BiocGenerics
+
+Package: BiocGenerics
+Source: Bioconductor
+Version: 0.18.0
+Hash: a7867e1dc7d96afd75a5d76053e495a6
+
+Package: CRImage
+Source: Bioconductor
+Version: 1.20.0
+Hash: b98f55f8a08ed27fbb943257a2c9f93c
+Requires: DNAcopy, EBImage, aCGH, e1071, foreach, sgeostat
+
+Package: DNAcopy
+Source: Bioconductor
+Version: 1.46.0
+Hash: 1be5c871b0a9707b1b27082a9bcd7606
+
+Package: EBImage
+Source: Bioconductor
+Version: 4.14.2
+Hash: 0d98bf795b823bc7f8438b001cde55f2
+Requires: BiocGenerics, abind, fftwtools, jpeg, locfit, png, tiff
+
+Package: aCGH
+Source: Bioconductor
+Version: 1.50.0
+Hash: 721c3eba85eca7dd4920df995ea01b72
+Requires: Biobase, multtest
+
+Package: abind
+Source: CRAN
+Version: 1.4-5
+Hash: 1ceb86ef5ebe776ed4753ab6165eb6d7
+
+Package: e1071
+Source: CRAN
+Version: 1.6-7
+Hash: a8b909c7e06f7bfcbdbbad439799e25d
+
+Package: fftwtools
+Source: CRAN
+Version: 0.9-7
+Hash: aa1f6040497b9864e32e4332fdc0665c
+
+Package: foreach
+Source: CRAN
+Version: 1.4.3
+Hash: cd53ef4cf29dc59ce3f8c5c1af735fd1
+Requires: iterators
+
+Package: iterators
+Source: CRAN
+Version: 1.0.8
+Hash: 488b93c2a4166db0d15f1e8d882cb1d4
+
+Package: jpeg
+Source: CRAN
+Version: 0.1-8
+Hash: 189af3df9864c6aa8546033f08ba9358
+
+Package: locfit
+Source: CRAN
+Version: 1.5-9.1
+Hash: f8adf87b055dff233b7c3f5b4a174554
+
+Package: multtest
+Source: Bioconductor
+Version: 2.28.0
+Hash: 4207b3cab4817c1ad47954b669d797bc
+Requires: Biobase, BiocGenerics
+
+Package: packrat
+Source: CRAN
+Version: 0.4.7-1
+Hash: 16ca16d36eb18d1d16113606ecc5c400
+
+Package: png
+Source: CRAN
+Version: 0.1-7
+Hash: 421d7d6e0fb4bd885ecbd909b6456b8b
+
+Package: sgeostat
+Source: CRAN
+Version: 1.0-27
+Hash: f217094f45b3cd5dc8f8a7ef98e7fbe0
+
+Package: tiff
+Source: CRAN
+Version: 0.1-5
+Hash: a19dbb6d42db52cd7fda30a68e4654e2
